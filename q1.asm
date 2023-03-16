@@ -19,13 +19,11 @@ prompt: .asciiz "Enter the desired array length: "
     # calculate number of bytes to allocate to array
     mul     $t0, $v0, 4     # $t0 = $v0 * 4
 
-    # allocate size of heap memory
+    # allocate heap memory beginning at 0x10040000
+    j		0x10040000		# jump to 0x10040000
     li      $v0, 9          # $v0 = 9
     move    $a0, $t0        # $a0 = $t0
     syscall                 # allocate $a0 bytes to array
-
-    # set array's base address
-    li      $s0, 0x10040000 # $s0 = 0x10040000
 
 # TO DO
 main:
