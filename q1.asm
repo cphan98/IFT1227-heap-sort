@@ -3,7 +3,7 @@
 
 # variables
 .data
-    prompt: .asciiz "Entrer the desired length of the array: "
+    prompt: .asciiz "Enter the desired length of the array: "
     n:
 
 # functions and methods
@@ -15,7 +15,7 @@
 
     # get user's desired length n
     li		$v0, 5	    # $v0 = 5
-    syscall             # $v0 = n (user's input)
+    syscall             # $v0 = user's input
 
     # store user's input into n
     move    $v0, n      # n = $v0
