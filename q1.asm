@@ -24,6 +24,7 @@ loop:                       # loop to add values into array
     addi    $s1, $s1, 4     # go to next address
     addi    $s0, $s0, -1    # counter = counter - 1
     bgt     $s0, $0, loop	# if $s0 > 0 then go to loop
+    # TODO return array length and address
 
 # swap:
 #     # TODO
