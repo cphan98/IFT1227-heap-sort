@@ -4,27 +4,27 @@
 # variables
 .data
 prompt: .asciiz "Enter the desired array length: "
-array: .data 0x10040000     # array data starts at 0x10040000
 
 # functions and methods
 .text
 main:
-    # prompt user to enter length n
-    li      $v0, 4          # $v0 = 4
-    la      $a0, prompt     # $a0 = prompt
+    li      $v0, 4          # syscall 4: print string
+    la      $a0, prompt     
     syscall                 # print prompt
-
-    # read user's input
-    li	    $v0, 5	        # $v0 = 5
+    li	    $v0, 5	        # syscall 5: read int
     syscall                 # $v0 = user's input
-
-    # store user's input into $s0
-    move    $v0, $s0        # $s0 = $v0
+    move    $v0, $s0        # $s0 = $v0 = counter for loop
 
 init:
-    # load array base address
-    la      $s1, array
-    
+    la      $s1, 0x10040000 # $s1 = 0x10040000
+loop:                       # loop to add values into array
+    li      $v0, 5          # syscall 5: read int 
+    syscall                 # $v0 = user's input
+    sw		$v0, 0($s1)		# array[i] = user's input
+    addi    $s1, $s1, 4     # go to next address
+    addi    $s0, $s0, -1    # counter = counter - 1
+    bgt     $s0, $0, loop	# if $s0 > 0 then go to loop
+
 # swap:
 #     # TODO
 # getLeftChildIndex:
