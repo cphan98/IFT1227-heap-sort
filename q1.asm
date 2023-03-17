@@ -18,11 +18,13 @@ main:
     syscall                 # print prompt
     li	    $v0, 5	        # syscall 5: read int
     syscall                 # $v0 = user's input
-    add     $t0, $0, $v0    # $t0 = user's input = counter for loop
-    add     $s0, $0, $t0    # $s0 = array length
+    bge		$v0, $0, init	# if $v0 >= 0, then go to init
+    j		main			# jump to main
     # TODO call other methods/functions
 
 init:
+    add     $t0, $0, $v0    # $t0 = user's input = counter for loop
+    add     $s0, $0, $t0    # $s0 = array length
     la      $t1, array      # $t1 = 0x10040000
 loop:                       # loop to add values into array
     li      $v0, 5          # syscall 5: read int 
