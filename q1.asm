@@ -13,7 +13,8 @@ main:
     syscall                 # print prompt
     li	    $v0, 5	        # syscall 5: read int
     syscall                 # $v0 = user's input
-    move    $v0, $s0        # $s0 = $v0 = counter for loop
+    add     $s0, $0, $v0    # $s0 = $v0 = counter for loop
+    # TODO call other methods/functions
 
 init:
     la      $s1, 0x10040000 # $s1 = 0x10040000
