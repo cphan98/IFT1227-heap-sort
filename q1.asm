@@ -18,9 +18,14 @@ main:
     syscall                 # print prompt
     li	    $v0, 5	        # syscall 5: read int
     syscall                 # $v0 = user's input
-    bge		$v0, $0, init	# if $v0 >= 0, then go to init
-    j		main			# jump to main
+    blt		$v0, $0, main	# if $v0 < 0, then go to main
+    jal		init			# jump to init and save position to $ra
+    addi    $a0, $0, 0      # argument 0 = i
+    addi    $a1, $0, 1      # argument 1 = j
+    jal     swap
     # TODO call other methods/functions
+    li      $v0, 10         # syscall 10: exit
+    syscall                 # terminate execution
 
 init:
     add     $t0, $0, $v0    # $t0 = user's input = counter for loop
@@ -45,9 +50,20 @@ loop:                       # loop to add values into array
     li      $v0, 1          # syscall 1: print int
     add     $a0, $0, $s0     
     syscall                 # print array length
+    jr		$ra				# jump to $ra
 
-# swap:
-#     # TODO
+swap: 
+    la		$t0, array
+    mul     $t1, $a0, 4     # position i in array
+    add     $t2, $t0, $t1   # array[i] address
+    lw		$t3, 0($t2)		# array[i]
+    mul     $t1, $a1, 4     # position j in array
+    add     $t4, $t0, $t1   # array[j] address
+    lw      $t5, 0($t4)     # array[j]
+    sw      $t5, 0($t2)     # store array[j] into array[i] address
+    sw      $t3, 0($t4)     # store array[i] into array[j] address
+    jr		$ra				# jump to $ra
+    
 # getLeftChildIndex:
 #     # TODO
 # getRightChildIndex:
