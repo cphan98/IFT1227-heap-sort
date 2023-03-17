@@ -4,6 +4,7 @@
 # variables
 .data
 prompt: .asciiz "Enter the desired array length: "
+array: .data 0x10040000     # array data starts at 0x10040000
 
 # functions and methods
 .text
@@ -13,19 +14,17 @@ main:
     la      $a0, prompt     # $a0 = prompt
     syscall                 # print prompt
 
-    # get user's desired length
+    # read user's input
     li	    $v0, 5	        # $v0 = 5
     syscall                 # $v0 = user's input
 
-    # calculate number of bytes to allocate to array
-    mul     $t0, $v0, 4     # $t0 = $v0 * 4
+    # store user's input into $s0
+    move    $v0, $s0        # $s0 = $v0
 
-    # allocate heap memory beginning at 0x10040000
-    li      $v0, 9          # $v0 = 9
-    move    $a0, $t0        # $a0 = $t0
-    syscall                 # allocate $a0 bytes to array
-# init:
-#     # TODO
+init:
+    # load array base address
+    la      $s1, array
+    
 # swap:
 #     # TODO
 # getLeftChildIndex:
