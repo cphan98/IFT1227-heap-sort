@@ -7,6 +7,7 @@ prompt: .asciiz "Enter the desired array length: "
 
 # functions and methods
 .text
+main:
     # prompt user to enter length n
     li      $v0, 4          # $v0 = 4
     la      $a0, prompt     # $a0 = prompt
@@ -23,10 +24,11 @@ prompt: .asciiz "Enter the desired array length: "
     li      $v0, 9          # $v0 = 9
     move    $a0, $t0        # $a0 = $t0
     syscall                 # allocate $a0 bytes to array
-
-# TO DO
-main:
-init:
-swap:
-getLeftChildIndex:
-getRightChildIndex:
+# init:
+#     # TODO
+# swap:
+#     # TODO
+# getLeftChildIndex:
+#     # TODO
+# getRightChildIndex:
+    # TODO
