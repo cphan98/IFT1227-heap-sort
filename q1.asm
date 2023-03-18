@@ -57,7 +57,7 @@ loop:                           # loop to add values into array
     syscall                     # print array length
     jr      $ra                 # jump to $ra
 
-swap: 
+swap:                           # 2 arguments: $a0 = i, $a1 = j
     la      $t0, array
     mul     $t1, $a0, 4         # position i in array
     add     $t2, $t0, $t1       # array[i] address
@@ -69,7 +69,7 @@ swap:
     sw      $t3, 0($t4)         # store array[i] into array[j] address
     jr      $ra                 # jump to $ra
     
-getLeftChildIndex:
+getLeftChildIndex:              # 1 argument: $a0 = index
     mul     $t0, $a0, 2         # 2 * index
     addi    $t0, $t0, 1         # 2 * index + 1
     li      $v0, 4              # syscall 4: print string
@@ -80,7 +80,7 @@ getLeftChildIndex:
     syscall                     # print left child index
     jr      $ra                 # jump to $ra
     
-getRightChildIndex:
+getRightChildIndex:             # 1 argument: $a0 = index
     mul     $t0, $a0, 2         # 2 * index
     addi    $t0, $t0, 2         # 2 * index + 2
     li      $v0, 4              # syscall 4: print string
