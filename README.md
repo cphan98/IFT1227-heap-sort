@@ -1,3 +1,3 @@
-### IFT1227TP3
+### IFT1227 TP3
 
 heapsort algorithm in MIPS
