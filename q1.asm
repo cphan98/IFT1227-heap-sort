@@ -7,6 +7,7 @@ prompt: .asciiz "Enter the desired array length: "
 address: .asciiz "Array base address: "
 length: .asciiz "\nArray length: "
 leftChild: .asciiz "\nLeft child index: "
+rightChild: .asciiz "\nRight child index: "
 
 .data 0x10040000                # array starts at 0x10040000
 array:
@@ -26,8 +27,8 @@ main:
     jal     swap                # jump to swap and save position to $ra
     addi    $a0, $0, 0          # argument 0 = index = 0
     jal		getLeftChildIndex   # jump to getLeftChildIndex and save position to $ra
-    
-    # TODO call other methods/functions
+    addi    $a0, $0, 0          # argument 0 = index = 0
+    jal     getRightChildIndex  # jump to getRightChildIndex and save position to $ra
     li      $v0, 10             # syscall 10: exit
     syscall                     # terminate execution
 
@@ -69,7 +70,6 @@ swap:
     jr		$ra				    # jump to $ra
     
 getLeftChildIndex:
-    # argument $a0 = parent index
     mul     $t0, $a0, 2         # 2 * index
     addi    $t0, $t0, 1         # 2 * index + 1
     li      $v0, 4              # syscall 4: print string
@@ -80,5 +80,13 @@ getLeftChildIndex:
     syscall                     # print left child index
     jr		$ra					# jump to $ra
     
-# getRightChildIndex:
-    # TODO
+getRightChildIndex:
+    mul     $t0, $a0, 2         # 2 * index
+    addi    $t0, $t0, 2         # 2 * index + 2
+    li      $v0, 4              # syscall 4: print string
+    la      $a0, rightChild     
+    syscall                     # print rightChild
+    li      $v0, 1              # syscall 1: print int
+    add     $a0, $0, $t0     
+    syscall                     # print right child index
+    jr		$ra					# jump to $ra
