@@ -65,14 +65,32 @@ getLeftChildIndex:              # 1 argument: $a0 = index
     mul     $t0, $a0, 2         # 2 * index
     addi    $t0, $t0, 1         # 2 * index + 1
     jr      $ra                 # jump to $ra
+    # value in $t0 from fixHeap will be overwritten --> change register
 
 getRightChildIndex:             # 1 argument: $a0 = index
     mul     $t0, $a0, 2         # 2 * index
     addi    $t0, $t0, 2         # 2 * index + 2
     jr      $ra                 # jump to $ra
+    # value in $t0 from fixheap will be overwritten --> change register
 
 fixHeap:                        # 2 arguments: $a0 = rootIndex, $a1 = lastIndex
     # TODO
+    # 1. remove root
+    la      $t0, array          # $t0 = 0x10040000
+    mul     $t1, $a0, 4         # $t1 = position rootIndex in array
+    add     $t2, $t0, $t1       # $t2 = array[rootIndex] address
+    lw      $t3, 0($t2)         # $t3 = array[rootIndex]
+    # 2. promote children while they are larger than the root
+    add     $t4, $0, $a0        # $t4 = index
+    addi    $s1, $0, 1          # true = 1
+    addi    $t5, $0, 1          # more = 1
+while:
+    bne     $t5, $s1, done      # if $t5 != $s1 then go to done
+    add     $a0, $0, $t4        # argument 0 : $a0 = index
+    jal     getLeftChildIndex   # jump to getLeftChildIndex and save position to $ra --> overwritting previous $ra? solution: store previous $ra into temporary register before jal?
+    # 3. store root value in vacant slot
+done:
+
 
 heapSort:                       # 2 arguments: $a0 = array, $a1 = lengthß
     # TODO
