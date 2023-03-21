@@ -82,7 +82,7 @@ fixHeap:                        # 2 arguments: $a0 = rootIndex, $a1 = lastIndex
 while:
     bne     $s4, 1, done        # if $s4 != 1 then go to done
     add     $a0, $0, $s3        # argument 0 : $a0 = index
-    la      $t7, $ra            # save previous $ra before jal
+    la      $t7, ($ra)          # save previous $ra before jal
     jal     getLeftChildIndex   # jump to getLeftChildIndex and save position to $ra
     bgt     $t8, $a1, else      # if $t8 > $a1 then go to else
     jal     getRightChildIndex  # jump to getRightChildIndex and save position to $ra
@@ -110,7 +110,8 @@ done:
     mul     $t0, $s3, 4         # $t0 = position index in array
     add     $t1, $s1, $t0       # $t1 = array[index] address
     sw      $s2, 0($t1)         # array[index] = rootValue
-
+    la      $ra, ($t7)
+    jr      $ra                 # jump to $ra
 
 heapSort:                       # 2 arguments: $a0 = array, $a1 = lengthß
     # TODO
