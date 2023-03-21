@@ -62,16 +62,14 @@ swap:                           # 2 arguments: $a0 = i, $a1 = j
     jr      $ra                 # jump to $ra
 
 getLeftChildIndex:              # 1 argument: $a0 = index
-    mul     $t0, $a0, 2         # 2 * index
-    addi    $t0, $t0, 1         # 2 * index + 1
+    mul     $t9, $a0, 2         # 2 * index
+    addi    $t9, $t9, 1         # 2 * index + 1
     jr      $ra                 # jump to $ra
-    # value in $t0 from fixHeap will be overwritten --> change register
 
 getRightChildIndex:             # 1 argument: $a0 = index
-    mul     $t0, $a0, 2         # 2 * index
-    addi    $t0, $t0, 2         # 2 * index + 2
+    mul     $t9, $a0, 2         # 2 * index
+    addi    $t9, $t9, 2         # 2 * index + 2
     jr      $ra                 # jump to $ra
-    # value in $t0 from fixheap will be overwritten --> change register
 
 fixHeap:                        # 2 arguments: $a0 = rootIndex, $a1 = lastIndex
     # TODO
