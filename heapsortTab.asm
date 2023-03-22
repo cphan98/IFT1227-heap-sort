@@ -85,26 +85,44 @@ while:
     add     $a0, $0, $s3        # argument 0 : $a0 = index
     la      $t7, ($ra)          # save previous $ra before jal
     jal     getLeftChildIndex   # jump to getLeftChildIndex and save position to $ra
-    add     $t3, $t8, $0        # copy into $t3 the leftChildIndex in $t8
-    bgt     $t8, $a1, else      # if $t8 > $a1 then go to else
+    add     $t3, $t8, $0        # $t3 = childIndex, and it is initially leftChildIndex
+    bgt     $t3, $a1, elseFinal # if $t8 > $a1 then go directly to elseFinal
+    la	    $t7, ($ra)		 # save previous $ra before jal
     jal     getRightChildIndex  # jump to getRightChildIndex and save position to $ra
-    bgt     $t9, $a1, if        # if $t9 > $a1 then go to if
-    mul     $t0, $t9, 4         # $t0 = position rightChildIndex in array
-    add     $t1, $s1, $t0       # $t1 = array[rightChildIndex] address
-    lw      $t2, 0($t1)         # $t2 = array[rightChildIndex]
-    mul     $t0, $t8, 4         # $t0 = position childIndex
-    add     $t1, $s1, $t0       # $t1 = array[childIndex] address
-    lw      $t3, 0($t1)         # $t3 = array[childIndex]
-    ble     $t2, $t3, if        # if $t2 <= $t3 then go to if
-    add     $t8, $0, $t9        # childIndex = rightChildIndex
-if:
-    ble     $t3, $s2, else      # if $t3 <= $s2 then go to else
-    mul     $t0, $s3, 4         # $t0 = position index in array
-    add     $t1, $s1, $t0       # $t1 = array[index] address
-    sw      $t3, 0($t1)         # array[index] = array[childIndex]
-    add     $s3, $0, $t8        # index = childIndex
-    j       done                # jump to done
-else:
+    ble     $t9, $a1, ifOne     # if $t9 <= $a1 then go to ifOne
+    j       lastIf		 # jump directly to lastIf if $t9 > $a1
+    
+    # Use right child instead if it is larger
+ifOne:
+    mul     $t9, $t9, 4         # multiply $t9 (which is rightChildIndex) by 4 for array positioning
+    add     $s7, $t9, $s1       # $s7 will be the adress of array[rightChildIndex]
+    lw      $s6, 0($s7)	      	 # we load the value of array[rightChildIndex] into $s6
+    mul     $t3, $t3, 4         # multiply $t9 (which is leftChildIndex) by 4 for array positioning
+    add     $s7, $t3, $s1       # $s7 will be the adress of array[childIndex]
+    lw      $s5, 0($s7)         # we load the value of array[childIndex] into $s5
+    bgt     $s6, $s5, ifTwo     # the second conditional statement will then be verified if $s6 > $s5
+    j       lastIf              # otherwise we jump directly to lastIf
+ifTwo:
+    div     $t9, $t9, 4         # we divide back $t9 by 4 to get its initial value
+    add     $t3, $t9, $0        # we put $t9 into $t3. Now, childIndex becomes rightChildIndex
+    j       lastIf              # we jump to lastIf after that
+    
+lastIf:
+    mul     $t3, $t3, 4         # now that we have childIndex, we multiply by 4 for array positioning
+    add     $s7, $t3, $s1       # we store the adress of array[childIndex] into $s7
+    lw      $s6, 0($s7)         # we store the value of array[childIndex] into $s6
+    bgt     $s6, $s2, lastThen  # $s2 is rootValue. if array[childIndex] > rootValue then jump to lastThen
+    j       elseFinal           # otherwise we jump directly to elseFinal
+    
+lastThen:
+    # Promote  child
+    mul     $s3, $s3, 4         # s3 = index, multiply by 4 for array positioning
+    add     $s7, $s3, $s1       # we store the adress of array[index] into $s7
+    sw      $s6, 0($s7)         # we write the value of $s6 (which is array[childIndex]) into array[index]
+    div     $t3, $t3, 4         # we multiplied $t3 by 4 earlier so we divide it back by 4
+    add     $s3, $t3, $0        # $s3 takes the value of $t3. index = childIndex
+    j       while
+elseFinal:
     addi    $s4, $0, -1         # more = 0 = false
     j       while               # jump to while
     # 3. store root value in vacant slot
