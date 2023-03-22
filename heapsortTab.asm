@@ -35,7 +35,7 @@ loop:                           # loop to add values into array
     addi    $s1, $s1, 4         # go to next address
     addi    $t0, $t0, -1        # counter = counter - 1
     bgt     $t0, $0, loop       # if $t0 > 0 then go to loop
-    la      $s1, array
+    la      $s1, array          # load back the beginning of the array into $s1 for future operations
     li      $v0, 4              # syscall 4: print string
     la      $a0, address     
     syscall                     # print address
