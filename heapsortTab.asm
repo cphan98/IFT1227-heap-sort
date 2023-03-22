@@ -20,7 +20,10 @@ main:
     syscall                     # $v0 = user's input
     blt     $v0, $0, main       # if $v0 < 0, then go to main
     jal     init                # jump to init and save position to $ra
-    # TODO call fixHeap and heapSort
+    
+    la      $a0, array          # load beginning of array into $a0
+    add     $a1, $v0, $0        # 
+    jal     heapSort
     li      $v0, 10             # syscall 10: exit
     syscall                     # terminate execution
 
@@ -35,7 +38,7 @@ loop:                           # loop to add values into array
     addi    $s1, $s1, 4         # go to next address
     addi    $t0, $t0, -1        # counter = counter - 1
     bgt     $t0, $0, loop       # if $t0 > 0 then go to loop
-    la      $s1, array          # load back the beginning of the array into $s1 for future operations
+    la      $s1, array
     li      $v0, 4              # syscall 4: print string
     la      $a0, address     
     syscall                     # print address
@@ -86,7 +89,7 @@ while:
     la      $t7, ($ra)          # save previous $ra before jal
     jal     getLeftChildIndex   # jump to getLeftChildIndex and save position to $ra
     add     $t3, $t8, $0        # $t3 = childIndex, and it is initially leftChildIndex
-    bgt     $t3, $a1, elseFinal # if $t8 > $a1 then go directly to elseFinal
+    bgt     $t3, $a1, elseFinal # if $t3 > $a1 then go directly to elseFinal
     la	    $t7, ($ra)		 # save previous $ra before jal
     jal     getRightChildIndex  # jump to getRightChildIndex and save position to $ra
     ble     $t9, $a1, ifOne     # if $t9 <= $a1 then go to ifOne
@@ -121,7 +124,7 @@ lastThen:
     sw      $s6, 0($s7)         # we write the value of $s6 (which is array[childIndex]) into array[index]
     div     $t3, $t3, 4         # we multiplied $t3 by 4 earlier so we divide it back by 4
     add     $s3, $t3, $0        # $s3 takes the value of $t3. index = childIndex
-    j       while
+    j       while		 
 elseFinal:
     addi    $s4, $0, -1         # more = 0 = false
     j       while               # jump to while
@@ -135,3 +138,30 @@ done:
 
 heapSort:                       # 2 arguments: $a0 = array, $a1 = lengthß
     # TODO
+    sub     $s5, $s0, 1		 # $s5 = n = array.length -1
+    sub     $s4, $s5, 1         
+    div     $s4, $s4, 2         # $s4 = i = (n-1)/2
+sortLoop:
+    add     $a0, $s4, $0        # we put $s4 = i as the first argument
+    add     $a1, $s5, $0        # we put $s5 = n as the second argument
+    la      $t6, ($ra)          # we load $ra into $t6 for future jumps
+    jal     fixHeap             # we call fixHeap function with $a0 and $a1 as args
+    sub     $s4, $s4, 1         # we decrement i by 1
+    bgez    $s4, sortLoop       # we repeat this loop while i >= 0
+    # then we begin the second loop
+whileLoop:
+    add     $a0, $0, $0         # the first argument is always 0 here
+    add     $a1, $s5, $0        # the second argument will be $s5 = n
+    la      $t6, ($ra)          # we load $ra into $t6 for future jumps
+    jal     swap                # we call the swap function with 0 and n as args
+    sub     $s5, $s5, 1         # we decrement n by 1
+    add     $a0, $0, $0         # we put $a0 = 0 again
+    add     $a1, $s5, $0        # and $s5 = n is the second argument
+    la      $t6, ($ra)          # we load $ra into $t6 for future jumps
+    jal     fixHeap             # we call fixHeap with 0 and n as ar
+    bgtz    $s5, whileLoop      # we repeat this loop while n > 0
+    la      $ra, ($t6)          # we load back $t6 into $ra
+    jr      $ra                 # we now jump into the main function
+    
+            
+    
