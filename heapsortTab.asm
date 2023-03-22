@@ -35,6 +35,7 @@ loop:                           # loop to add values into array
     addi    $s1, $s1, 4         # go to next address
     addi    $t0, $t0, -1        # counter = counter - 1
     bgt     $t0, $0, loop       # if $t0 > 0 then go to loop
+    la      $s1, array
     li      $v0, 4              # syscall 4: print string
     la      $a0, address     
     syscall                     # print address
@@ -84,6 +85,7 @@ while:
     add     $a0, $0, $s3        # argument 0 : $a0 = index
     la      $t7, ($ra)          # save previous $ra before jal
     jal     getLeftChildIndex   # jump to getLeftChildIndex and save position to $ra
+    add     $t3, $t8, $0        # copy into $t3 the leftChildIndex in $t8
     bgt     $t8, $a1, else      # if $t8 > $a1 then go to else
     jal     getRightChildIndex  # jump to getRightChildIndex and save position to $ra
     bgt     $t9, $a1, if        # if $t9 > $a1 then go to if
