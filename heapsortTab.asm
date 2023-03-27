@@ -13,18 +13,18 @@ array:
 # functions and methods
 .text
 main:
-	li	$v0, 4			# syscall 4: print string
+	li	$v0, 4			        # syscall 4: print string
 	la	$a0, prompt
-	syscall 			# print "Enter the desired array length: "
-	li	$v0, 5			# syscall 5: read int
-	syscall				# $v0 = user's input = array length
-	blt	$v0, $0, main	# if $v0 < 0 (array length is neg), then go to main
-	jal	init			# else, jump to init and save position to $ra
-	la	$a0, array		# arg 0 = $a0 = array address base
-	add	$a1, $0, $v0	# arg 1 = $a1 = array length		
-	jal	heapsort		# jump to init and save position to $ra
-	li	$v0, 10			# syscall 10: exit
-	syscall 			# terminate execution
+	syscall 			        # print "Enter the desired array length: "
+	li	$v0, 5			        # syscall 5: read int
+	syscall				        # $v0 = user's input = array length
+	blt	$v0, $0, main	        # if $v0 < 0 (array length is neg), then go to main
+	jal	init			        # else, jump to init and save position to $ra
+	la	$a0, array		        # arg 0 = $a0 = array address base
+	add	$a1, $0, $v0	        # arg 1 = $a1 = array length		
+	jal	heapsort		        # jump to init and save position to $ra
+	li	$v0, 10			        # syscall 10: exit
+	syscall 			        # terminate execution
 
 init:
 	add	    $t0, $0, $v0	    # $t0 = array length = counter for loop
