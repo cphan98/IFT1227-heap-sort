@@ -27,29 +27,30 @@ main:
 	syscall 			# terminate execution
 
 init:
-    add     $t0, $0, $v0        # $t0 = user's input = counter for loop
-    add     $s0, $0, $t0        # $s0 = array length
-    la      $s1, array          # $s1 = 0x10040000
-loop:                           # loop to add values into array
-    li      $v0, 5              # syscall 5: read int 
-    syscall                     # $v0 = user's input
-    sw      $v0, 0($s1)         # array[i] = user's input
-    addi    $s1, $s1, 4         # go to next address
-    addi    $t0, $t0, -1        # counter = counter - 1
-    bgt     $t0, $0, loop       # if $t0 > 0 then go to loop
-    li      $v0, 4              # syscall 4: print string
-    la      $a0, address     
-    syscall                     # print address
-    li      $v0, 34             # syscall 34: print int in hexa
-    la      $a0, array
-    syscall                     # print array base address
-    li      $v0, 4              # syscall 4: print string
-    la      $a0, length     
-    syscall                     # print length
-    li      $v0, 1              # syscall 1: print int
-    add     $a0, $0, $s0     
-    syscall                     # print array length
-    jr      $ra                 # jump to $ra
+	add	    $t0, $0, $v0	    # $t0 = array length = counter for loop
+	add	    $s0, $0, $t0	    # $s0 = array length
+	la	    $s1, array		    # $s1 = 0x10040000
+initLoop:
+	li	    $v0, 5			    # syscall 5: read int
+	syscall				        # $v0 = user's input = element of array
+	sw	    $v0, 0($s1)		    # store $v0 into array[i] address
+	addi	$s1, $s1, 4	        # increment by 4 to go to next array[i] address
+	addi	$t0, $t0, -1        # $t0 = counter - 1
+	bgt	    $t0, $0, loop	    # if $t0 > 0 (counter is pos) then go to loop
+	la	    $s1, array		    # reset $s1 = 0x10040000
+	li	    $v0, 4			    # syscall 4: print string
+	la	    $a0, address
+	syscall				        # print "Array base address: "
+	li	    $v0, 34			    # syscall 34: print int in hexadecimal
+	la	    $a0, array
+	syscall				        # print 0x10040000
+	li	    $v0, 4			    # syscall 4: print string
+	la	    $a0, length
+	syscall				        # print "\nArray length: "
+	li	    $v0, 1		    	# syscall 1: print int
+	add	    $a0, $0, $s0
+	syscall				        # print $s0 = array length
+	jr	    $ra			        # jump to $ra
 
 swap:                           # 2 arguments: $a0 = i, $a1 = j
     mul     $t0, $a0, 4         # $t0 = position i in array
