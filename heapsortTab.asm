@@ -68,10 +68,10 @@ getLeftChildIndex:					# 1 arg: $a0 = index
 	addi	$t8, $t8, 1				# $t8 = (index * 2) + 1
 	jr		$ra						# jump to $ra
 
-getRightChildIndex:                 # 1 argument: $a0 = index
-    mul     $t9, $a0, 2         # 2 * index
-    addi    $t9, $t9, 2         # $t9 = 2 * index + 2
-    jr      $ra                 # jump to $ra
+getRightChildIndex:					# 1 arg: $a0 = index
+	mul		$t9, $a0, 2				# $t9 = index * 2
+	addi	$t9, $t9, 2				# $t9 = (index * 2) + 2
+	jr		$ra						# jump to $ra
 
 fixHeap:							# 2 args: $a0 = rootIndex, $a1 = lastIndex
 	addi	$sp, $sp, -4			# make space in stack
