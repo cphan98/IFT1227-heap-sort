@@ -63,10 +63,10 @@ swap:                               # 2 arguments: $a0 = i, $a1 = j
     sw      $t2, 0($t3)         # store array[i] into array[j] address
     jr      $ra                 # jump to $ra
 
-getLeftChildIndex:                  # 1 argument: $a0 = index
-    mul     $t8, $a0, 2         # 2 * index
-    addi    $t8, $t8, 1         # $t8 = 2 * index + 1
-    jr      $ra                 # jump to $ra
+getLeftChildIndex:					# 1 arg: $a0 = index
+	mul		$t8, $a0, 2				# $t8 = index * 2
+	addi	$t8, $t8, 1				# $t8 = (index * 2) + 1
+	jr		$ra						# jump to $ra
 
 getRightChildIndex:                 # 1 argument: $a0 = index
     mul     $t9, $a0, 2         # 2 * index
