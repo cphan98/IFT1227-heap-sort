@@ -90,6 +90,7 @@ while:
 	add		$t3, $0, $t8			# $t3 = childIndex
 	bgt		$t3, $a1, elseFinal		# if $t3 > $a1 (childIndex > lastIndex), then go to elseFinal
 	jal		getRightChildIndex		# jump to getRightChildIndex and save position to $ra
+	ble		$t9, $a1, if1			# if $t9 <= $a1 (rightChildIndex <= lastIndex)
 	# TODO
 
 heapSort:						    # 2 arguments: $a0 = array, $a1 = array length
