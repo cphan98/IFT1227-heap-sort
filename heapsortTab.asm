@@ -73,7 +73,7 @@ getRightChildIndex:                 # 1 argument: $a0 = index
     addi    $t9, $t9, 2         # $t9 = 2 * index + 2
     jr      $ra                 # jump to $ra
 
-fixHeap:							# 1 arg: $a0 = index
+fixHeap:							# 2 args: $a0 = rootIndex, $a1 = lastIndex
 	addi	$sp, $sp, -4			# make space in stack
 	sw		$ra, 0($sp)				# add $ra value to stack
 	# remove root
@@ -87,7 +87,10 @@ while:
 	bne		$s4, 1, done			# if $s4 != 1 then go to done
 	add		$a0, $0, $s3			# arg 0 = $a0 = index
 	jal		getLeftChildIndex		# jump to getLeftChildIndex and save position to $ra
-    #TODO
+	add		$t3, $0, $t8			# $t3 = childIndex
+	bgt		$t3, $a1, elseFinal		# if $t3 > $a1 (childIndex > lastIndex), then go to elseFinal
+	jal		getRightChildIndex		# jump to getRightChildIndex and save position to $ra
+	# TODO
 
 heapSort:						    # 2 arguments: $a0 = array, $a1 = array length
 	addi	$sp, $sp, -4		    # make space in stack
