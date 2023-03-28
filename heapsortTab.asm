@@ -132,14 +132,22 @@ done:
 	addi	$sp, $sp, 4				# restore $sp
 	jr		$ra						# jump to $ra
 
-heapSort:						    # 2 arguments: $a0 = array, $a1 = array length
-	addi	$sp, $sp, -4		    # make space in stack
-	sw		$ra, 0($sp)			    # add $ra value to stack
-	addi	$s5, $s0, -1		    # $s5 = n = array.length - 1
-	addi	$s4, $s5, -1		    # $s4 = n - 1
-	div		$s4, $s4, 2			    # $s4 = i = (n - 1)/2
-sortLoop:
-	add		$a0, $s4, $0		    # arg 0 = $a0 = i
-	add		$a1, $s5, $0		    # arg 1 = $a1 = n
-	jal		fixHeap				    # jump to fixHeap and save position to $ra
-    # TODO
+heapSort:							# 2 arguments: $a0 = array, $a1 = array length
+	addi	$sp, $sp, -4			# make space in stack
+	sw		$ra, 0($sp)				# add $ra value to stack
+	addi	$s5, $s0, -1			# $s5 = n = array.length - 1
+	addi	$s4, $s5, -1			# $s4 = n - 1
+	div		$s4, $s4, 2				# $s4 = i = (n - 1)/2
+forLoop:
+	bltz 	$s4, whileLoop			# if $s4 < 0 (i is neg), then go to whileLoop
+	add		$a0, $0, $s4			# arg 0 = $a0 = i
+	add		$a1, $0, $s5			# arg 1 = $a1 = n
+	jal		fixHeap					# jump to fixHeap and save position to $ra
+	addi	$s4, $s4, -1			# $s4 = i - 1
+	j		forLoop					# jump to forLoop
+whileLoop:
+	blez 	$s5, doneSort			# if $s5 <= 0 (n <= 0), then go to doneSort
+	add		$a0, $0, $0				# arg 0 = $a0 = 0
+	add		$a1, $0, $s5			# arg 1 = $a1 = n
+	jal		swap					# jump to swab and save position to $ra
+	# TODO
