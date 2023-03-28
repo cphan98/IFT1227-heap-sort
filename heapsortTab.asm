@@ -22,7 +22,7 @@ main:
 	jal	init			            # else, jump to init and save position to $ra
 	la	    $a0, array		        # arg 0 = $a0 = array address base
 	add	    $a1, $0, $v0	        # arg 1 = $a1 = array length		
-	jal	heapsort		            # jump to init and save position to $ra
+	jal	heapSort		            # jump to init and save position to $ra
 	li	    $v0, 10			        # syscall 10: exit
 	syscall 			            # terminate execution
 
