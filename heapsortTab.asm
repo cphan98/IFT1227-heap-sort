@@ -52,16 +52,16 @@ initLoop:
 	syscall				            # print $s0 = array length
 	jr	    $ra			            # jump to $ra
 
-swap:                               # 2 arguments: $a0 = i, $a1 = j
-    mul     $t0, $a0, 4         # $t0 = position i in array
-    add     $t1, $s1, $t0       # $t1 = array[i] address
-    lw      $t2, 0($t1)         # $t2 = array[i]
-    mul     $t0, $a1, 4         # $t0 = position j in array
-    add     $t3, $s1, $t0       # $t3 = array[j] address
-    lw      $t4, 0($t3)         # $t4 = array[j]
-    sw      $t4, 0($t1)         # store array[j] into array[i] address
-    sw      $t2, 0($t3)         # store array[i] into array[j] address
-    jr      $ra                 # jump to $ra
+swap:								# 2 args: $a0 = i, $a1 = j
+	mul		$t0, $a0, 4				# $t0 = i position in array
+	add		$t1, $s1, $t0			# $t1 = array[i] address
+	lw		$t2, 0($t1)				# $t2 = array[i] value
+	mul		$t0, $a1, 4				# $t0 = j position in array
+	add		$t3, $s1, $t0			# $t3 = array[j] address
+	lw		$t4, 0($t3)				# $t4 = array[j] value
+	sw		$t4, 0($t1)				# store $t4 = array[j] value into $t1 = array[i] address
+	sw		$t2, 0($t3)				# store $t2 = arrai[i] value into $t3 = array[j] address
+	jr		$ra						# jump to $ra
 
 getLeftChildIndex:					# 1 arg: $a0 = index
 	mul		$t8, $a0, 2				# $t8 = index * 2
