@@ -60,6 +60,12 @@ getLeftChildIndex:
     addi    $s4,                $s4,        1           # $s4 = 2 * index + 1
     jr      $ra                                         # jump to $ra
 
+# 1 arg: $a0 = index
+getRightChildIndex:
+    mul     $s5,                $a0,        2           # $s5 = 2 * index
+    addi    $s5,                $s5,        2           # $s5 = 2 * index + 2
+    jr      $ra                                         # jump to $ra
+
 # 2 args: $a0 = rootIndex, $a1 = lastIndex
 fixHeap:
     addi    $sp,                $sp,        -4          # make spce in stack
