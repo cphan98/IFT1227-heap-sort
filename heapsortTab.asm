@@ -53,3 +53,18 @@ initLoop:
     add     $a0,        $0,         $s0
     syscall                                         # print $s0 = array length
     jr      $ra                                     # jump to $ra
+
+# 2 args: $a0 = array base address, $a1 = array length
+heapSort:
+    addi    $sp,        $sp,        -4              # make space in stack
+    sw      $ra,        0($sp)                      # add $ra value to stack
+    addi    $t0,        $s0,        -1              # $t0 = n = array.length - 1
+    addi    $t1,        $t0,        -1              # $t1 = n - 1
+    div     $t1,        $t1,        2               # $t1 = i = (n - 1)/2
+forLoop:
+    bltz    $t1,        whileLoop                   # if $t1 > 0 (i is neg), then go to whileLoop
+    add     $a0,        $0,         $t1             # arg 0 = $a0 = i
+    add     $a1,        $0,         $t0             # arg 1 = $a1 = n
+    jal     fixHeap                                 # jump to fixHeap and save position to $ra
+
+# TODO
