@@ -150,4 +150,12 @@ whileLoop:
 	add		$a0, $0, $0				# arg 0 = $a0 = 0
 	add		$a1, $0, $s5			# arg 1 = $a1 = n
 	jal		swap					# jump to swab and save position to $ra
-	# TODO
+	addi	$s5, $s5, 1				# $s5 = n - 1
+	add		$a0, $0, $0				# arg 0 = $a0 = 0
+	add		$a1, $0, $s5			# arg 1 = $a1 = n
+	jal		fixHeap					# jump to fixHeap and save position to $ra
+	j		whileLoop				# jump to whileLoop
+doneSort:
+	lw		$ra, 0($sp)				# restore $ra
+	addi	$sp, $sp, 4				# restore $sp
+	jr		$ra						# jump to $ra
