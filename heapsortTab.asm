@@ -79,7 +79,7 @@ fixHeap:							# 2 args: $a0 = rootIndex, $a1 = lastIndex
 	# remove root
 	mul		$t0, $a0, 4				# $t0 = rootIndex position in array
 	add		$t1, $s1, $t0			# $t1 = array[rootIndex] address
-	lw		$s2, 0($t1)				# $s2 = array[rootIndex] = rootValue
+	lw		$s2, 0($t1)				# $s2 = array[rootIndex] value = rootValue
 	# promote children while they are larger than the root
 	add		$s3, $0, $a0			# $s3 = index
 	addi	$s4, $0, 1				# $s4 = more = true = 1
@@ -88,10 +88,49 @@ while:
 	add		$a0, $0, $s3			# arg 0 = $a0 = index
 	jal		getLeftChildIndex		# jump to getLeftChildIndex and save position to $ra
 	add		$t3, $0, $t8			# $t3 = childIndex
-	bgt		$t3, $a1, elseFinal		# if $t3 > $a1 (childIndex > lastIndex), then go to elseFinal
+	bgt		$t3, $a1, else			# if $t3 > $a1 (childIndex > lastIndex), then go to else (no children)
+	# use right child instead if it is larger
 	jal		getRightChildIndex		# jump to getRightChildIndex and save position to $ra
-	ble		$t9, $a1, if1			# if $t9 <= $a1 (rightChildIndex <= lastIndex)
-	# TODO
+	ble		$t9, $a1, if1			# if $t9 <= $a1 (rightChildIndex <= lastIndex), then go to if1
+	j		if3						# else, jump to if3
+if1:
+	mul		$t9, $t9, 4				# $t9 = rightChildIndex position in array
+	add		$s7, $t9, $s1			# $s7 = array[rightChildIndex] address
+	lw		$s6, 0($s7)				# $s6 = array[rightChildIndex] value
+	mul		$t3, $t3, 4				# $t3 = childIndex position in array
+	add		$s7, $t3, $s1			# $s7 = array[childIndex] address
+	lw		$s5, 0($s7)				# $s5 = array[childIndex] value
+	bgt		$s6, $s5, if2			# if $s6 > $s5 (array[rightChildIndex] > array[childIndex]), then go to if2
+	j		if3						# else, jump to if3
+if2:
+	div		$t9, $t9, 4				# $t9 = rightChildIndex
+	add		$t3, $0, $t9			# $t3 = childIndex = rightChildIndex
+if3:
+	mul		$t3, $t3, 4				# $t3 = childIndex position in array
+	add		$s7, $t3, $s1			# $s7 = array[childIndex] address
+	lw		$s6, 0($s7)				# $s6 = array[childIndex] value
+	bgt		$s6, $s2, then			# if $s6 > $s2 (array[childIndex] > rootValue), then go to then
+	j		else					# else, jump to else (rootValue is larger than both children)
+then:
+	# promote child
+	mul		$s3, $s3, 4				# $s3 = index position in array
+	add		$s7, $s3, $s1			# $s7 = array[index] address
+	sw		$s6, 0($s7)				# $s7 = array[index] = array[childIndex]
+	div		$t3, $t3, 4				# $t3 = childIndex
+	add		$s3, $0, $t3			# $s3 = index = childIndex
+	j		while					# jump to while
+else:
+	# no children or root value is larger than both children
+	addi	$s4, $0, -1				# more = 0 = false
+	j		while					# jump to while
+done:
+	# store root value in vacant slot
+	mul		$t0, $s3, 4				# $t0 = index position in array
+	add		$t1, $s1, $t0			# $t1 = array[index] address
+	sw		$s2, 0($t1)				# $t1 = array[index] = rootValue
+	lw		$ra, 0($sp)				# restore $ra
+	addi	$sp, $sp, 4				# restore $sp
+	jr		$ra						# jump to $ra
 
 heapSort:						    # 2 arguments: $a0 = array, $a1 = array length
 	addi	$sp, $sp, -4		    # make space in stack
