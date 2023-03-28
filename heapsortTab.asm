@@ -54,6 +54,12 @@ initLoop:
     syscall                                             # print $s0 = array length
     jr      $ra                                         # jump to $ra
 
+# 1 arg: $a0 = index
+getLeftChildIndex:
+    mul     $s4,                $a0,        2           # $s4 = 2 * index
+    addi    $s4,                $s4,        1           # $s4 = 2 * index + 1
+    jr      $ra                                         # jump to $ra
+
 # 2 args: $a0 = rootIndex, $a1 = lastIndex
 fixHeap:
     addi    $sp,                $sp,        -4          # make spce in stack
