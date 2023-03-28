@@ -36,7 +36,7 @@ initLoop:
 	sw	    $v0, 0($s1)		        # store $v0 into array[i] address
 	addi	$s1, $s1, 4	            # increment by 4 to go to next array[i] address
 	addi	$t0, $t0, -1            # $t0 = counter - 1
-	bgt	    $t0, $0, loop	        # if $t0 > 0 (counter is pos) then go to loop
+	bgt	    $t0, $0, initLoop	    # if $t0 > 0 (counter is pos) then go to initLoop
 	la	    $s1, array		        # reset $s1 = 0x10040000
 	li	    $v0, 4			        # syscall 4: print string
 	la	    $a0, address
