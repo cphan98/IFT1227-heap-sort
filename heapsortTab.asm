@@ -115,7 +115,7 @@ then:
 	# promote child
 	mul		$s3, $s3, 4				# $s3 = index position in array
 	add		$s7, $s3, $s1			# $s7 = array[index] address
-	sw		$s6, 0($s7)				# $s7 = array[index] = array[childIndex]
+	sw		$s6, 0($s7)				# store $s6 = array[childIndex] value into $s7 = array[index] address
 	div		$t3, $t3, 4				# $t3 = childIndex
 	add		$s3, $0, $t3			# $s3 = index = childIndex
 	j		while					# jump to while
@@ -127,7 +127,7 @@ done:
 	# store root value in vacant slot
 	mul		$t0, $s3, 4				# $t0 = index position in array
 	add		$t1, $s1, $t0			# $t1 = array[index] address
-	sw		$s2, 0($t1)				# $t1 = array[index] = rootValue
+	sw		$s2, 0($t1)				# store $s2 = rootValue into $t1 = array[index] address
 	lw		$ra, 0($sp)				# restore $ra
 	addi	$sp, $sp, 4				# restore $sp
 	jr		$ra						# jump to $ra
