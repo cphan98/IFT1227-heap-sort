@@ -20,4 +20,5 @@ main:
     syscall                                         # $v0 = user's input = array lenght
     blt     $v0,    $0,     main                    # if $v0 < 0 (array length is neg), then go to main
     jal     init                                    # else, jump to init and save position to $ra
-                                                    # TODO
+
+# TODO
