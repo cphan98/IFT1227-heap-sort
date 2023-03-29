@@ -141,12 +141,21 @@ forLoop:
     add     $a0,                $0,         $t1         # arg 0 = $a0 = i
     add     $a1,                $0,         $t0         # arg 1 = $a1 = n
     jal     fixHeap                                     # jump to fixHeap and save position to $ra
-    addi    $t1,                $t1,        -1          # $t1: i - 1
+    addi    $t1,                $t1,        -1          # $t1: i--
     j       forLoop                                     # jump to forLoop
 whileLoop:
     blez    $t0,                doneSort                # if $t0 (n <= 0), then go to doneSort
     add     $a0,                $0,         $0          # arg 0: $a0 = 0
     add     $a1,                $0,         $t0         # arg 1: $a1 = n
     jal     swap                                        # jump to swap and save position to $ra
+    addi    $t0,                $t0,        -1          # $t0: n--
+    add     $a0,                $0,         $0          # arg 0: $a0 = 0
+    add     $a1,                $0,         $t0         # arg 1: $a1 = n
+    jal     fixHeap                                     # jump to fixHeap and save position to $ra
+    j       whileLoop                                   # jump to whileLoop
+doneSort:
+    lw      $ra,                0($sp)                  # restore $ra
+    addi    $sp,                $sp,        4           # restore $sp
+    jr      $ra                                         # jump to $ra
 
 # TODO
