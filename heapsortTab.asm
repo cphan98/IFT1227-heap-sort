@@ -54,6 +54,18 @@ initLoop:
     syscall                                             # print $s0 (array length)
     jr      $ra                                         # jump to $ra
 
+# 2 args: $a0 = i, $a1 = j
+swap:
+    mul     $t6,                $a0,        4           # $t6: i position in array
+    add     $t6,                $t6,        $s1         # $t6: array[i] address
+    lw      $t8,                0($t6)                  # $t8: temp = array[i] value
+    mul     $t7,                $a1,        4           # $t7: j position in array
+    add     $t7,                $t7,        $s1         # $t7: array[j] address
+    lw      $t9,                0($t7)                  # $t9: array[j] value
+    sw      $t9,                0($t6)                  # store $t9 (array[j] value) into $t6 address (array[i] address)
+    sw      $t8,                0($t7)                  # store $t8 (temp) into $t7 address (array[j] address)
+    j       $ra                                         # jump to $ra
+
 # 1 arg: $a0 = index
 getLeftChildIndex:
     mul     $s4,                $a0,        2           # $s4: 2 * index
