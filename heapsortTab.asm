@@ -157,5 +157,3 @@ doneSort:
     lw      $ra,                0($sp)                  # restore $ra
     addi    $sp,                $sp,        4           # restore $sp
     jr      $ra                                         # jump to $ra
-
-# TODO
