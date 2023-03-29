@@ -81,7 +81,7 @@ while:
     bne     $t2,                1,          done        # if $t2 != 1 (more = false), then go to done
     add     $a0,                $0,         $3          # arg 0: $a0 = index
     jal     getLeftChildIndex                           # jump to getLeftChildIndex and save position to $ra
-    add     $s4,                $a1,        else        # if $s4 > $a1 (childIndex > lastIndex), then go to else
+    bgt     $s4,                $a1,        else        # if $s4 > $a1 (childIndex > lastIndex), then go to else
                                                         # use right child instead if it is larger
     jal     getRightChildIndex                          # jump to getRightChildIndex and save position to $ra
     bgt     $s5,                $a1,        if          # if $s5 > $a1 (rightChildIndex > lastIndex), then go to if
