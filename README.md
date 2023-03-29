@@ -1,3 +1,3 @@
 ### IFT1227 TP3
 
-fix bug: put $ra in stack
+fix bug: put $ra in stack in heapsortTab.asm
