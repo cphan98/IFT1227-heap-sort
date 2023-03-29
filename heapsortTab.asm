@@ -25,8 +25,8 @@ main:
     la      $a0,                array                   # arg 0: $a0 = 0x10040000
     add     $a1,                $0,         $s0         # arg 1: $a1 = array length
     jal     heapSort                                    # jump to heapSort and save position to $ra
-
-# TODO
+    li      $v0,                10                      # syscall 10: exit
+    syscall                                             # terminate execution
 
 init:
     add     $t0,                $0,         $v0         # $t0: array length = counter for loop
@@ -82,11 +82,11 @@ getRightChildIndex:
 fixHeap:
     addi    $sp,                $sp,        -4          # make spce in stack
     sw      $ra,                0($sp)                  # add $ra value to stack
-                                                        # remove root
+    # remove root
     mul     $s2,                $a0,        4           # $s2: rootIndex position in array
     add     $s2,                $s2,        $s1         # $s2: array[rootIndex] address
     lw      $s2,                0($s2)                  # $s2: rootValue = array[rootIndex] value
-                                                        # promote children while they are larger than the root
+    # promote children while they are larger than the root
     add     $s3,                $0,         $a0         # $s3: index = rootIndex
     addi    $t2,                $0,         1           # $t2: more = true = 1
 while:
@@ -94,7 +94,7 @@ while:
     add     $a0,                $0,         $3          # arg 0: $a0 = index
     jal     getLeftChildIndex                           # jump to getLeftChildIndex and save position to $ra
     bgt     $s4,                $a1,        else        # if $s4 > $a1 (childIndex > lastIndex), then go to else
-                                                        # use right child instead if it is larger
+    # use right child instead if it is larger
     jal     getRightChildIndex                          # jump to getRightChildIndex and save position to $ra
     bgt     $s5,                $a1,        if          # if $s5 > $a1 (rightChildIndex > lastIndex), then go to if
     mul     $t3,                $s5,        4           # $t3: rightChild position in array
@@ -110,18 +110,18 @@ if:
     add     $t4,                $t4,        $s1         # $t4: array[childIndex] address
     lw      $t4,                0($t4)                  # $t4: array[childIndex] value
     ble     $t4,                $s2,        else        # if $t4 <= $s2 (array[childIndex] <= rootValue), then go to else
-                                                        # promote child
+    # promote child
     mul     $t5,                $s3,        4           # $t5: index position in array
     add     $t5,                $t5,        $s1         # $t5: array[index] address
     sw      $t4,                0($t5)                  # store $t4 (array[childIndex] value) into $t5 address (array[index] address)
     add     $s3,                $0,         $s4         # $s3: index = childIndex
     j       while                                       # jump to while
 else:
-                                                        # no children or root value is larger than both children
+    # no children, or root value is larger than both children
     addi    $t2,                $0,         -1          # $t2: more = false = 0
     j       while                                       # jump to while
 done:
-                                                        # store root value in vacant slot
+    # store root value in vacant slot
     mul     $t5,                $s3,        4           # $t5: index position in array
     add     $t5,                $t5,        $s1         # $t5: array[index] address
     sw      $s2,                0($t5)                  # store $s2 (rootValue) into $t5 address (array[index] address)
