@@ -13,6 +13,10 @@ array:
 # functions and methods
 # $s0 = array length
 # $s1 = 0x10040000
+# $s2 = rootValue
+# $s3 = index
+# $s4 = childIndex
+# $s5 = rightChildIndex
 .text
 main:
     li      $v0,                4                       # syscall 4: print string
