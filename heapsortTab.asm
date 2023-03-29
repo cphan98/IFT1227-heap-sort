@@ -64,7 +64,7 @@ swap:
     lw      $t9,                0($t7)                  # $t9: array[j] value
     sw      $t9,                0($t6)                  # store $t9 (array[j] value) into $t6 address (array[i] address)
     sw      $t8,                0($t7)                  # store $t8 (temp) into $t7 address (array[j] address)
-    j       $ra                                         # jump to $ra
+    jr      $ra                                         # jump to $ra
 
 # 1 arg: $a0 = index
 getLeftChildIndex:
