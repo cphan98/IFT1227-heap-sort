@@ -1,5 +1,10 @@
-# 20220019 Hoang-Thi-Thi Cynthia Phan
-# 20254813 Razafindrakoto Nathan Riantsoa
+# Date : 2023-03-20
+
+# 20220019 Hoang-Thi-Thi Cynthia Phan (hoang-thi-thi.cynthia.phan@umontreal.ca)
+# 20254813 Razafindrakoto Nathan Riantsoa (nathan.razafindrakoto@umontreal.ca)
+
+# Ce code a pour but d'initialiser un tableau de n valeurs à partir de l'adresse 0x10040000, puis
+# de tester les fonctions swap, getRightChildIndex, getLeftChildIndex et init
 
 # variables
 .data
