@@ -3,7 +3,7 @@
 
 # variables
 .data
-prompt: .asciiz "Enter the desired array length: "
+prompt: .asciiz "\nEnter the desired array length: "
 address: .asciiz "Array base address: "
 length: .asciiz "\nArray length: "
 
