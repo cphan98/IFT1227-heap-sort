@@ -95,7 +95,7 @@ fixHeap:
     addi    $t2,                $0,         1           # $t2: more = true = 1
 while:
     bne     $t2,                1,          done        # if $t2 != 1 (more = false), then go to done
-    add     $a0,                $0,         $3          # arg 0: $a0 = index
+    add     $a0,                $0,         $s3         # arg 0: $a0 = index
     jal     getLeftChildIndex                           # jump to getLeftChildIndex and save position to $ra
     bgt     $s4,                $a1,        else        # if $s4 > $a1 (childIndex > lastIndex), then go to else
     # use right child instead if it is larger
@@ -141,7 +141,7 @@ heapSort:
     addi    $t1,                $t0,        -1          # $t1 = n - 1
     div     $t1,                $t1,        2           # $t1 = i = (n - 1)/2
 forLoop:
-    bltz    $t1,                whileLoop               # if $t1 > 0 (i is neg), then go to whileLoop
+    bltz    $t1,                whileLoop               # if $t1 < 0 (i is neg), then go to whileLoop
     add     $a0,                $0,         $t1         # arg 0 = $a0 = i
     add     $a1,                $0,         $t0         # arg 1 = $a1 = n
     jal     fixHeap                                     # jump to fixHeap and save position to $ra
