@@ -1,5 +1,10 @@
-# 20220019 Hoang-Thi-Thi Cynthia
-# 20254813 Razafindrakoto Nathan Riantsoa
+# Date : 2023-03-29
+
+# 20220019 Hoang-Thi-Thi Cynthia Phan (hoang-thi-thi.cynthia.phan@umontreal.ca)
+# 20254813 Razafindrakoto Nathan Riantsoa (nathan.razafindrakoto@umontreal.ca)
+
+# Ce code a pour but d'implémenter en MIPS la méthode heapSort pour trier dans l'ordre croissant un tableau
+# initial de n éléments
 
 # variables
 .data
