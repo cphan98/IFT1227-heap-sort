@@ -129,5 +129,12 @@ forLoop:
     add     $a0,                $0,         $t1         # arg 0 = $a0 = i
     add     $a1,                $0,         $t0         # arg 1 = $a1 = n
     jal     fixHeap                                     # jump to fixHeap and save position to $ra
+    addi    $t1,                $t1,        -1          # $t1: i - 1
+    j       forLoop                                     # jump to forLoop
+whileLoop:
+    blez    $t0,                doneSort                # if $t0 (n <= 0), then go to doneSort
+    add     $a0,                $0,         $0          # arg 0: $a0 = 0
+    add     $a1,                $0,         $t0         # arg 1: $a1 = n
+    jal     swap                                        # jump to swap and save position to $ra
 
 # TODO
